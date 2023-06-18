@@ -3,10 +3,12 @@ var board;
 var context;
 var board ;
 var body;
+var snake;
 
 window.onload = function Onload(){
  CreateBoard(10);
  addButton();
+ addSnake();
 } 
 
 
@@ -45,5 +47,12 @@ function addButton(){
     startButton.textContent = 'start game';
     body.appendChild(startButton);
 
+}
+
+function addSnake(){
+    snake = [[0,0]];
+    let row = board.children[snake[0][0]];
+    let cell = row.children[snake[0][1]];
+    cell.style.background = "black"
 }
 
