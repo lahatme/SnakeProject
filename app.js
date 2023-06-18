@@ -1,18 +1,21 @@
 const blockSize = 25;
 var board;
 var context;
+var board ;
+var body;
 
 window.onload = function Onload(){
  CreateBoard(10);
+ addButton();
 } 
 
 
 
 function CreateBoard(size){
-    const body = document.getElementById("body");
+    board = document.createElement("div");
+    body = document.getElementById("body");
     body.style.justifyContent="center";
 
-    const board = document.createElement("div");
     body.appendChild(board);
     board.style.display = "flex";
     board.style.flexDirection= "column";
@@ -35,5 +38,12 @@ function CreateBoard(size){
         board.appendChild(row);
     }
    
+}
+
+function addButton(){
+    const startButton = document.createElement("button")
+    startButton.textContent = 'start game';
+    body.appendChild(startButton);
+
 }
 
