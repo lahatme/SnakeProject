@@ -5,6 +5,7 @@ var board ;
 var body;
 var snake;
 var direction = [0,1];
+var food ;
 
 window.onload = function Onload(){
  CreateBoard(10);
@@ -44,6 +45,7 @@ function CreateBoard(size){
    
 }
 async function startGame(){
+    addFood();
     while(true){
     snakeMovement();
     await new Promise(r => setTimeout(r, 300));
@@ -65,7 +67,20 @@ function addSnake(){
     cell.style.background = "black"
 }
 
+function removeFood(){
+    let foodRow = board.children[food[0]];
+    let foodCell = foodRow.children[food[1]];
+    foodCell.style.background = "red"
+}
 
+function addFood(){
+    let xFood = Math.floor(Math.random() * 10);
+    let yFood = Math.floor(Math.random() * 10);
+    food = [xFood, yFood];
+    let foodRow = board.children[food[0]];
+    let foodCell = foodRow.children[food[1]];
+    foodCell.style.background = "yellow"
+}
 
 function snakeMovement(){
     snake.forEach(element => {
