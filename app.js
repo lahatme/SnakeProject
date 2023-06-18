@@ -7,8 +7,9 @@ var snake;
 
 window.onload = function Onload(){
  CreateBoard(10);
- addButton();
  addSnake();
+ addButton();
+ 
 } 
 
 
@@ -41,10 +42,18 @@ function CreateBoard(size){
     }
    
 }
+async function startGame(){
+    snakeMovement();
+    await new Promise(r => setTimeout(r, 1000));
+    snakeMovement();
+    await new Promise(r => setTimeout(r, 1000));
+    snakeMovement();
+}
 
 function addButton(){
     const startButton = document.createElement("button")
     startButton.textContent = 'start game';
+    startButton.addEventListener("click", startGame);
     body.appendChild(startButton);
 
 }
@@ -54,5 +63,19 @@ function addSnake(){
     let row = board.children[snake[0][0]];
     let cell = row.children[snake[0][1]];
     cell.style.background = "black"
+}
+
+
+
+function snakeMovement(){
+    snake.forEach(element => {
+        let oldRow = board.children[snake[0][0]];
+        let oldCell = oldRow.children[snake[0][1]];
+        oldCell.style.background = "red"
+        element[1] ++;
+        let row = board.children[snake[0][0]];
+        let cell = row.children[snake[0][1]];
+        cell.style.background = "black"
+    });
 }
 
