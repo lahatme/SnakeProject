@@ -6,7 +6,7 @@ var body;
 var snake;
 var direction = [0,1];
 var food ;
-
+var isGameOver = false;
 window.onload = function Onload(){
  CreateBoard(10);
  addSnake();
@@ -45,8 +45,9 @@ function CreateBoard(size){
    
 }
 async function startGame(){
+    document.addEventListener('keydown', (event) => { onkeydown(event.key)});
     addFood();
-    while(true){
+    while(!isGameOver){
     snakeMovement();
     await new Promise(r => setTimeout(r, 300));
     }
@@ -61,10 +62,13 @@ function addButton(){
 }
 
 function addSnake(){
-    snake = [[0,0]];
-    let row = board.children[snake[0][0]];
-    let cell = row.children[snake[0][1]];
-    cell.style.background = "black"
+    snake = [[0,0],[0,1],[0,2]];
+    snake.forEach(element => {
+        let row = board.children[element[0]];
+        let cell = row.children[element[1]];
+        cell.style.background = "black"
+    });
+    
 }
 
 function removeFood(){
@@ -83,24 +87,55 @@ function addFood(){
 }
 
 function snakeMovement(){
-    snake.forEach(element => {
-        let oldRow = board.children[element[0]];
-        let oldCell = oldRow.children[element[1]];
-        oldCell.style.background = "red"
-        if(element[0] === 9 && element[1]=== 9){
-            direction = [0,-1];
-        }else if(element[0] === 0 && element[1]=== 0){
-            direction = [0,1];
-        }else if(element[0] === 0 && element[1]===9){
-            direction = [1,0];
-        }else if(element[0] === 9 && element[1]=== 0){
-            direction = [-1,0];
-        }
-        element[0] = element[0]+ direction[0];
-        element[1] = element[1]+ direction[1];
-        let row = board.children[element[0]];
-        let cell = row.children[element[1]];
-        cell.style.background = "black"
+    let element = snake[snake.length-1];
+    let oldElement = [];       
+    oldElement[0] = element[0];
+    oldElement[1] = element[1];
+    element[0] = element[0]+ direction[0];
+    element[1] = element[1]+ direction[1];
+    if(element[0] ===10 || element[0] === -1 || element[1] ===10 || element[1] === -1 ){
+        gameOver();
+        return;
+    }
+    let row = board.children[element[0]];
+    let cell = row.children[element[1]];
+    cell.style.background = "black";
+    let oldRow = board.children[snake[0][0]];
+    let oldCell = oldRow.children[snake[0][1]];
+    oldCell.style.background = "red";   
+    snake.slice(0,-1).reverse().forEach(shift => {
+        let oldShift = [];
+        oldShift[0] = shift[0];
+        oldShift[1] = shift[1];
+        shift[0] = oldElement[0];
+        shift[1] = oldElement[1];
+        oldElement[0] = oldShift[0];
+        oldElement[1] = oldShift[1];       
     });
+   
+}
+
+
+function gameOver(){
+    let gameOver =  document.createElement("div")
+    gameOver.textContent = "GAME OVER";
+    gameOver.style.position = "absolute";
+    gameOver.style.top = "25%";
+    gameOver.style.left = "51%"
+    body.appendChild(gameOver);
+    isGameOver = true;
+
+}
+
+function onkeydown(key){
+ if(key  === "ArrowRight"){
+    direction = [0,1]
+ }else if(key  === "ArrowLeft"){
+    direction = [0,-1]
+ }else if(key  === "ArrowUp"){
+    direction = [-1,0]
+ }else if(key  === "ArrowDown"){
+    direction = [1,0]
+ }
 }
 
