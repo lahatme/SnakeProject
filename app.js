@@ -4,6 +4,7 @@ var context;
 var board ;
 var body;
 var snake;
+var direction = [0,1];
 
 window.onload = function Onload(){
  CreateBoard(10);
@@ -43,11 +44,10 @@ function CreateBoard(size){
    
 }
 async function startGame(){
+    while(true){
     snakeMovement();
-    await new Promise(r => setTimeout(r, 1000));
-    snakeMovement();
-    await new Promise(r => setTimeout(r, 1000));
-    snakeMovement();
+    await new Promise(r => setTimeout(r, 300));
+    }
 }
 
 function addButton(){
@@ -69,12 +69,22 @@ function addSnake(){
 
 function snakeMovement(){
     snake.forEach(element => {
-        let oldRow = board.children[snake[0][0]];
-        let oldCell = oldRow.children[snake[0][1]];
+        let oldRow = board.children[element[0]];
+        let oldCell = oldRow.children[element[1]];
         oldCell.style.background = "red"
-        element[1] ++;
-        let row = board.children[snake[0][0]];
-        let cell = row.children[snake[0][1]];
+        if(element[0] === 9 && element[1]=== 9){
+            direction = [0,-1];
+        }else if(element[0] === 0 && element[1]=== 0){
+            direction = [0,1];
+        }else if(element[0] === 0 && element[1]===9){
+            direction = [1,0];
+        }else if(element[0] === 9 && element[1]=== 0){
+            direction = [-1,0];
+        }
+        element[0] = element[0]+ direction[0];
+        element[1] = element[1]+ direction[1];
+        let row = board.children[element[0]];
+        let cell = row.children[element[1]];
         cell.style.background = "black"
     });
 }
