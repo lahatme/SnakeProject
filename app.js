@@ -100,6 +100,9 @@ function snakeMovement(){
     let row = board.children[element[0]];
     let cell = row.children[element[1]];
     cell.style.background = "black";
+    if(food[0] === element[0] && food[1] === element[1]){
+        addFood();
+    }
     let oldRow = board.children[snake[0][0]];
     let oldCell = oldRow.children[snake[0][1]];
     oldCell.style.background = "red";   
