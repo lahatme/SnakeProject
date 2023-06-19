@@ -102,7 +102,12 @@ function snakeMovement(){
     cell.style.background = "black";
     let oldRow = board.children[snake[0][0]];
     let oldCell = oldRow.children[snake[0][1]];
-    oldCell.style.background = "red";   
+    if(food[0] === element[0] && food[1] === element[1]){
+        addFood();
+        snake.unshift([snake[0][0],snake[0][1]]);
+    }else{ 
+    oldCell.style.background = "red";
+    }
     snake.slice(0,-1).reverse().forEach(shift => {
         let oldShift = [];
         oldShift[0] = shift[0];
@@ -138,4 +143,6 @@ function onkeydown(key){
     direction = [1,0]
  }
 }
+
+
 
